@@ -1,3 +1,9 @@
+--------
+
+-- NOT COMPLETE YET
+
+--------
+
 CREATE TABLE Bank (
 	code varchar(10),
     registration varchar(10),
