@@ -132,60 +132,46 @@
 
 
 ----while loop----
-declare @count int
-set @count = 0
-while(@count <= 10)
-begin
-	set @count = @count + 1
+	declare @count int
+	set @count = 0
+	while(@count <= 10)
+	begin
+		set @count = @count + 1
 
-	if @count = 1
-		print 'Hello, SQL'
+		if @count = 1
+			print 'Hello, SQL'
 
-	if @count = 2
-		select eid from Emp
+		if @count = 2
+			select eid from Emp
 
-	if @count = 3
-		select ename from Emp 
+		if @count = 3
+			select ename from Emp 
 
-	if @count = 4
-		begin
-			print 'Continue statement'
-			continue
-		end
+		if @count = 4
+			begin
+				print 'Continue statement'
+				continue
+			end
 
-	if @count = 5
-		print @count
+		if @count = 5
+			print @count
 	
-	if @count = 6
-		print 'Bye SQL' 
+		if @count = 6
+			print 'Bye SQL' 
 
-	if @count = 7
-		begin
-			print 'break statement'
-			break
-		end
-	print @count
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		if @count = 7
+			begin
+				print 'break statement'
+				break
+			end
+		print @count
+	end
 
 --IF statement
-if(select eid from Emp) > 1000
-begin
-	--select eid from Emp
-	print 'age'
-end
-else
-	print 'age not > 35'
+	if(select eid from Emp) > 1000
+	begin
+		--select eid from Emp
+		print 'age'
+	end
+	else
+		print 'age not > 35'
