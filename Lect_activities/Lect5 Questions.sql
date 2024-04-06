@@ -106,6 +106,27 @@
 			from Work
 			where eid = 1000
 
+--Create a procedure to give a salary increment to all the employee by a given percentage from their existing salary
+			--input para --> precentage
+			select *
+			from Emp
+
+			--create procedure
+			create procedure incSalary(@pct float)
+			as
+				begin
+					update Emp
+					set salary = salary + salary * (@pct / 100)
+				end
+
+			--execute procedure
+			exec incSalary 10
+
+			select *
+			from Emp
+
+			---To drop procedure---
+--			drop procedure incSalary  
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 ----variable declaration-----
@@ -175,3 +196,35 @@
 	end
 	else
 		print 'age not > 35'
+
+----create function without parameter 
+--**Function should have return type and value**--
+	create function withoutPara() returns int
+	as
+		begin
+			declare @i int set @i = 0
+			return @i
+		end
+
+	declare @j int
+	exec @j = withoutPara
+	print @j
+
+---------delete all the roes in Emp table------
+declare @i int set @i = 0
+declare @empid int set @empid = 1000
+--alter table Work drop constraint fk_eid_Emp
+while (@i < 10)
+	begin
+		delete from Emp where eid = @empid
+		print @empid
+		print @i
+		set @empid = @empid + 1
+		set @i = @i + 1
+	end
+
+select *
+from Emp
+
+--add deleted foreign key in 
+--alter table Work add constraint fk_eid_Emp foreign key (eid) references Emp(eid)
