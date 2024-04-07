@@ -24,7 +24,12 @@ there to see the movie. The primary keys of all relations are underlined.
 
 --1. Find the names of the directors who had worked with American stars. Assume that if an actor/actress
 --stars in a movie the directed by a director the actor/actress works with that director.
+			select m.DirectorName
+			from Movie m, StarsIn s, MovieStar ms
+			where m.title = s.movieTitle and ms.name = s.starname and ms.country = 'America'
+
 --2. Find the movies in English for which all seats are booked in a theater.
+
 --3. Display the names of stars who have acted in 3 or more movies in any year between 2017 and 2018.
 --4. Find the names of male stars who had only starred in lead roles in 2018.
 --5. Find the names of the stars who has appeared in same movie with ‘Robert Downey’.
