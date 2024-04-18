@@ -2,6 +2,8 @@
 --Dept (did, budget,mangerId)
 --Works (eid, did, pct_time)
 
+----Connect with DMS_Revision database
+
 --Create a view named dept_info that contains name of the department, budget and  manager’s name
 
 			--1st step
@@ -127,6 +129,40 @@
 
 			---To drop procedure---
 --			drop procedure incSalary  
+
+--create a procedure that outputs statistics of salary (min, max) for a given department.
+			create procedure getSalaryInfo(@did varchar(12), @minS real output, @maxS real output)
+			as
+				begin
+					select @minS = min(e.salary), @maxS = max(e.salary)
+					from Emp e inner join Work w on e.eid = w.eid inner join Dept d on d.did = w.did
+					where /*e.eid = w.eid and d.did = w.did and*/ d.did = @did
+				end
+			declare @min real, @max real
+			exec getSalaryInfo 'Admin', @min output, @max output
+			print @min
+			print @max
+
+--drop procedure getSalaryInfo
+
+
+--Create a procedure that outputs the name of the manager and his salary in a given department.
+			create procedure managerInfo(@did varchar(12), @mName varchar(25) output, @mSal real output)
+			as
+				begin
+					select @mName = e.ename, @mSal = e.salary
+					from Emp e inner join Dept d on d.managerId = e.eid
+					where d.did = @did
+				end
+
+			declare @name varchar(25), @sal real
+			exec managerInfo 'Academic', @name output, @sal output
+			print @name
+			print @sal
+
+
+
+
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 ----variable declaration-----
