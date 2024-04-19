@@ -10,7 +10,7 @@ CREATE TABLE Supplier (
 CREATE TABLE Product (
 	productId VARCHAR(10),
 	productName VARCHAR(30),
-	qty INT NOT NULL,
+	qty INT check (qty > 0),
 	unitPrice FLOAT,
 	ROL INT,
 	supplier INT,
@@ -37,12 +37,12 @@ CREATE TABLE Sales (
 	pid VARCHAR(10),
 	cid VARCHAR(10),
 	sid VARCHAR(10),
-	salesDate DATETIME,
+	salesDate DATETIME default getdate(),
 
 	CONSTRAINT PK_pidcidsidsalesDate_Sales PRIMARY KEY(pid, cid, sid, salesDate),
 	CONSTRAINT FK_pid_Sales FOREIGN KEY (pid) REFERENCES Product(productID),
 	CONSTRAINT FK_cid_Sales FOREIGN KEY (cid) REFERENCES Customer(custId),
-	CONSTRAINT FK_sid_Sales FOREIGN KEY (sid) REFERENCES Staff(staffId),
+	CONSTRAINT FK_sid_Sales FOREIGN KEY (sid) REFERENCES Staff(staffId)
 )
 
 INSERT INTO Supplier (supId, contactName, address, phone) VALUES 
@@ -68,3 +68,11 @@ INSERT INTO Sales (pid, cid, sid, salesDate) values
 ('P0222', 'C101', 'S002', 22/11/2015),
 ('P0084', 'C100', 'S001', 01/12/2015),
 ('P0201', 'C100', 'S002', 08/12/2015);
+
+
+insert into Product values ('P0223', 'Super cream cracker', 4, 480, 10, 1)
+
+insert into Sales(pid, cid, sid) values ('P0223', 'C101', 'S001')
+
+select * from Product
+select * from Sales
