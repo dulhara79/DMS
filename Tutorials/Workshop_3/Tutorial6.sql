@@ -99,10 +99,77 @@
 			select * from Booking
 			select * from Show
 			select * from Theater
+			select * from StarsIn
+			select * from MovieStar
+			select * from Movie
 
 --6. Assume that each movie star is assigned with a rank based on the number of lead roles he/she had played.
 --Create a procedure to update a rank attribute added to the MovieStar table for each movie star.
+		--create tank col in movie star table
+		alter table MovieStar add rank int
+
+			create procedure updateRank(@sName char(50))
+			as
+				begin
+					declare @rNum int
+					select @rNum = count(s.role)
+					from MovieStar m, StarsIn s
+					where m.name = s.starname and s.role = 'lead' and m.name = @sName
+
+					update MovieStar
+					set rank = @rNum
+					where name = @sName
+				end
+
+select * from MovieStar
+
+exec updateRank 'Robert Downey'
+exec updateRank 'Bryce Howard'
+exec updateRank 'Chadwick Boseman'
+exec updateRank 'Chris Pratt'
+exec updateRank 'Jennifer Lawrence'
+exec updateRank 'Robert Downey'
+exec updateRank 'Scarlett Johansson' 
+exec updateRank 'Tom Holland'
+
+drop procedure updateRank
+
 --7. Create a trigger to ensure that the number of spectators in the show table does not exceed the capacity
 --of the theater its shown in.
+CREATE TRIGGER CheckCapacity
+ON Show
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    DECLARE @theaterName VARCHAR(50)
+    DECLARE @capacity INT
+    DECLARE @spectators INT
+
+    -- Get theater name and capacity from inserted table
+    SELECT @theaterName = theaterName, @spectators = spectators
+    FROM inserted
+
+    -- Get capacity from Theater table
+    SELECT @capacity = capacity
+    FROM Theater
+    WHERE theaterName = @theaterName
+
+    -- Check if spectators exceed capacity
+    IF @spectators > @capacity
+    BEGIN
+        RAISERROR('The number of spectators cannot exceed the capacity of the theater.', 16, 1)
+        ROLLBACK TRANSACTION
+    END
+END
+
+update Show
+set spectators = 128
+where showId = 3
+
+--drop trigger checkCapacity
+
+select * from Show
+select * from Theater
+
 --8. Assuming that the Movie Star table already store the rank of each movie star based on the criteria in 5,
 --write a trigger to update the rank when the movie star appears in a new movie.
