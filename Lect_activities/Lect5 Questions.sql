@@ -161,7 +161,79 @@
 			print @sal
 
 
+-- Create Account table
+CREATE TABLE Account (
+    accountNo INT PRIMARY KEY,
+    custId INT,
+    branch VARCHAR(50),
+    balance FLOAT
+);
 
+-- Create AccountAudit table
+CREATE TABLE AccountAudit (
+    accountNo INT primary key,
+    balance FLOAT,
+    date DATE,
+    CONSTRAINT fk_accountNo_AccountAudit FOREIGN KEY (accountNo) REFERENCES Account(accountNo)
+);
+
+drop table AccountAudit
+
+-- Insert demo data into Account table
+INSERT INTO Account VALUES
+(1, 101, 'Main Branch', 50000.00),
+(2, 102, 'Downtown Branch', 75000.00),
+(3, 103, 'West Branch', 30000.00);
+
+-- Insert demo data into AccountAudit table
+/*INSERT INTO AccountAudit (accountNo, balance, date) VALUES
+(1, 50000.00, '2023-01-01'),
+(2, 75000.00, '2023-01-01'),
+(3, 30000.00, '2023-01-01'); */
+
+select * from Account
+select * from AccountAudit
+
+insert into Account values (4, 104, 'Colombo', 50000)
+--inserted  (accountNo, custId, branch, balance)
+--		    (4, 104, 'Colombo', 50000)
+
+
+
+--Create a trigger to track all inserts/updates done to the balance field of an Account table at a bank in the AccountAudit table
+			create trigger trackaccount
+			on Account
+			for insert, update
+			as
+			begin
+				declare @accNo int, @balane real
+				select @accNo = accountNo, @balane = balance
+				from inserted
+
+				insert into  AccountAudit values (@accNo, @balane, GETDATE()) 
+			end
+
+insert into Account values (4, 104, 'Colombo', 50000)
+
+select * from Account
+select * from AccountAudit
+-----------------------------------------
+create trigger trackaccountUsingInsteadOf
+	on Account
+	instead of insert, update
+	as
+	begin
+		declare @accNo int, @balane real
+		select @accNo = accountNo, @balane = balance
+		from inserted
+
+		insert into  AccountAudit values (@accNo, @balane, GETDATE()) 
+	end
+
+insert into Account values (5, 105, 'Malabe', 55000)
+
+select * from Account
+select * from AccountAudit
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
