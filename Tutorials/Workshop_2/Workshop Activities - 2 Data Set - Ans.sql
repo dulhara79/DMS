@@ -110,19 +110,17 @@ there to see the movie. The primary keys of all relations are underlined.
 
 --10. Find the name of the most popular movie. 
 -- The most popular movie is the movie viewed by most spectators.
-create view sumOfSpectators as
-select s.movieTitle as 'movieTitle', sum(s.spectators) as 'sumOfSpectators'
-from Show s
-group by s.movieTitle;
+			create view sumOfSpectators as
+			select s.movieTitle as 'movieTitle', sum(s.spectators) as 'sumOfSpectators'
+			from Show s
+			group by s.movieTitle;
 
-drop view sumOfSpectators
+			drop view sumOfSpectators
 
-select movieTitle, max(sumOfSpectators) as 'MostPopularMovie'
-from sumOfSpectators sm
+			select movieTitle, max(sumOfSpectators) as 'MostPopularMovie'
+			from sumOfSpectators sm
 
-select max(sm.sumOfSpectators) as 'MostPopularMovie'
-from sumOfSpectators sm
+			select max(sm.sumOfSpectators) as 'MostPopularMovie'
+			from sumOfSpectators sm
 
-select * from sumOfSpectators
-
-                
+			select * from sumOfSpectators                
